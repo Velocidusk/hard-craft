@@ -1,0 +1,196 @@
+{
+  "minecraft:entity": {
+    "format_version": "1.2.0",
+
+    "component_groups": {
+      "minecraft:baby": {
+        "minecraft:type_family": {
+          "family": [ "turtle", "baby_turtle" ]
+        },
+        "minecraft:collision_box": {
+          "width": 0.6,
+          "height": 0.2
+        },
+        "minecraft:underwater_movement": {
+          "value": 0.06
+        },
+        "minecraft:is_baby": {
+        },
+        "minecraft:scale": {
+          "value": 0.16
+        },
+        "minecraft:behavior.move_to_water": {
+          "priority": 1,
+          "search_range": 15,
+          "search_height": 5,
+          "goal_radius": 0.1
+        },
+        "minecraft:ageable": {
+          "duration": 1200,
+          "drop_items": [
+            "turtle_shell_piece"
+          ],
+          "grow_up": {
+            "event": "minecraft:ageable_grow_up",
+            "target": "self"
+          }
+        }
+      },
+
+      "minecraft:adult": {
+        "minecraft:type_family": {
+          "family": [ "turtle" ]
+        },
+        "minecraft:collision_box": {
+          "width": 1.2,
+          "height": 0.4
+        },
+        "minecraft:underwater_movement": {
+          "value": 0.12
+        },
+        "minecraft:loot": {
+          "table": "loot_tables/entities/sea_turtle.json"
+        },
+        "minecraft:behavior.move_to_land": {
+          "priority": 6,
+          "search_range": 16,
+          "search_height": 5,
+          "goal_radius": 0.5
+        },
+        "minecraft:behavior.random_stroll": {
+          "priority": 9,
+          "interval": 100
+        }
+      }
+    },
+
+    "components": {
+      "minecraft:identifier": {
+        "id": "minecraft:turtle"
+      },
+      "minecraft:breathable": {
+        "totalSupply": 15,
+        "suffocateTime": 0,
+        "breathesWater": true,
+        "breathesAir": true,
+        "generatesBubbles": false
+      },
+      "minecraft:nameable": {
+      },
+      "minecraft:health": {
+        "value": 300
+      },
+      "minecraft:attack": {
+        "damage": 50
+      },
+      "minecraft:movement": {
+        "value": 0.1
+      },
+      "minecraft:navigation.generic": {
+        "is_amphibious": true,
+        "can_path_over_water": false,
+        "can_swim": true,
+        "can_walk": true,
+        "can_sink": false,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement.amphibious": {
+        "max_turn": 5.0
+      },
+      "minecraft:jump.static": {
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 3,
+        "speed_multiplier": 1.0,
+        "track_target": false
+      },
+      "minecraft:behavior.move_towards_restriction": {
+        "priority": 4,
+        "speed_multiplier": 1
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 3,
+        "within_radius": 25,
+        "entity_types": [
+          {
+            "filters": { "other_with_families": [ "player" ] },
+            "max_dist": 35,
+            "must_see": false
+          }
+        ]
+      },
+      "minecraft:physics": {
+      },
+      "minecraft:home": {
+      },
+      "minecraft:follow_range": {
+        "value": 1024
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.move_to_water": {
+        "priority": 4,
+        "search_range": 16,
+        "search_height": 5,
+        "search_count": 1,
+        "goal_radius": 0.1
+      },
+      "minecraft:behavior.random_swim": {
+        "priority": 7,
+        "interval": 0,
+        "xz_dist": 30,
+        "y_dist": 15
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 8,
+        "target_distance": 6.0,
+        "probability": 0.02
+      }
+    },
+
+    "events": {
+      "minecraft:entity_spawned": {
+        "randomize": [
+          {
+            "weight": 9,
+            "add": {
+              "component_groups": [
+                "minecraft:adult"
+              ]
+            }
+          },
+          {
+            "weight": 1,
+            "add": {
+              "component_groups": [
+                "minecraft:baby"
+              ]
+            }
+          }
+        ]
+      },
+
+      "minecraft:entity_born": {
+        "add": {
+          "component_groups": [
+            "minecraft:baby"
+          ]
+        }
+      },
+
+      "minecraft:ageable_grow_up": {
+        "remove": {
+          "component_groups": [
+            "minecraft:baby"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minecraft:adult"
+          ]
+        }
+      }
+    }
+  }
+}
